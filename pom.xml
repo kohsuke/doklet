@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.kohsuke</groupId>
+    <artifactId>pom</artifactId>
+    <version>6</version>
+  </parent>
+  <artifactId>doklet</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>doklet</name>
+  <description>
+    This is a modification to the standard doclet that allows
+
+    http://server/path/to/index.html?ShortClassName
+
+    to automatically expands to:
+
+    http://server/path/to/index.html?fully/qualified/ClassName.html
+
+    This makes it easier to reference javadoc
+  </description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.tools</groupId>
+      <artifactId>tools</artifactId>
+      <version>1.7</version>
+      <scope>system</scope>
+      <systemPath>${toolsjar}</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <scm>
+    <connection>scm:git:git@github.com/kohsuke/${project.artifactId}.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/kohsuke/${project.artifactId}.git</developerConnection>
+    <url>http://${project.artifactId}.kohsuke.org/</url>
+  </scm>
+
+  <distributionManagement>
+    <site>
+      <id>github-pages</id>
+      <url>gitsite:git@github.com/kohsuke/${project.artifactId}.git</url>
+    </site>
+  </distributionManagement>
+
+  <profiles>
+    <profile>
+        <id>default-profile</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+            <file>
+                <exists>${java.home}/../lib/tools.jar</exists>
+            </file>
+        </activation>
+        <properties>
+            <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
+        </properties>
+    </profile>
+    <profile>
+        <id>mac-profile</id>
+        <activation>
+            <activeByDefault>false</activeByDefault>
+            <file>
+                <exists>${java.home}/../Classes/classes.jar</exists>
+            </file>
+        </activation>
+        <properties>
+            <toolsjar>${java.home}/../Classes/classes.jar</toolsjar>
+        </properties>
+    </profile>
+  </profiles>
+</project>
